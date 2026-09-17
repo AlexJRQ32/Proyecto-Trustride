@@ -1,0 +1,83 @@
+.modal {
+  border: none;
+  border-radius: 20px;
+  padding: 0;
+  max-width: 400px;
+  width: calc(100% - 32px);
+  background: var(--bg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modal-in 0.3s ease;
+  margin: auto;
+}
+@media (min-width: 768px) {
+  .modal {
+    max-width: 460px;
+    border-radius: 24px;
+  }
+}
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.modal-content {
+  padding: 20px;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.modal-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.modal-close:active {
+  background: var(--surface-hover);
+}
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal .form-group {
+  margin-bottom: 0;
+}
+.modal .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .modal .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}

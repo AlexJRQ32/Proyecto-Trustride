@@ -1,0 +1,158 @@
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Reuse stats-grid and content-grid from Owner */
+.admin-dashboard .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1200px) {
+  .admin-dashboard .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-dashboard .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-dashboard .stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-dashboard .stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-dashboard .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.admin-dashboard .stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.admin-dashboard .content-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+}
+
+@media (max-width: 1200px) {
+  .admin-dashboard .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-dashboard .content-main,
+.admin-dashboard .content-side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-dashboard .walk-meta {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+/* Top Walkers */
+.top-walkers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.top-walker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+
+.top-walker:hover {
+  background: var(--surface-hover);
+}
+.top-walker-rank {
+  font-weight: 700;
+  color: var(--text-tertiary);
+  min-width: 24px;
+  font-size: 13px;
+}
+.top-walker-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.top-walker-info {
+  flex: 1;
+}
+.top-walker-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+.top-walker-stats {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Approvals */
+.approval-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.approval-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+
+.approval-item:hover {
+  background: var(--surface-hover);
+}
+.approval-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.approval-info {
+  flex: 1;
+}
+.approval-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+.approval-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.approval-actions {
+  display: flex;
+  gap: 4px;
+}

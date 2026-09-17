@@ -1,0 +1,34 @@
+/* ═══════════════════════════════════════════════════════════════
+   TOKENS — Opción 1: Cálida y amigable
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #ffffff;
+  --bg-secondary: #faf8f5;
+  --surface: rgba(0, 0, 0, 0.03);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+  --text: #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --text-tertiary: #a0a0a0;
+  --accent: #ff6b35;
+  --accent-hover: #e55a25;
+  --accent-light: rgba(255, 107, 53, 0.08);
+  --accent-glow: rgba(255, 107, 53, 0.15);
+  --green: #2ec4b6;
+  --green-light: rgba(46, 196, 182, 0.1);
+  --orange: #f4a261;
+  --orange-light: rgba(244, 162, 97, 0.1);
+  --red: #e63946;
+  --red-light: rgba(230, 57, 70, 0.1);
+  --purple: #7209b7;
+  --purple-light: rgba(114, 9, 183, 0.1);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --divider: rgba(0, 0, 0, 0.06);
+  --font-body:
+    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display:
+    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --sidebar-width: 260px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}

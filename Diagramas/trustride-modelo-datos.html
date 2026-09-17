@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trustride — Modelo de Datos</title>
+<style>
+  :root {
+    --teal-50: #ecfdf5;
+    --teal-100: #d1fae5;
+    --teal-200: #a7f3d0;
+    --teal-500: #10b981;
+    --teal-600: #059669;
+    --teal-700: #047857;
+    --teal-800: #065f46;
+    --emerald-50: #ecfdf5;
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+    --amber-400: #fbbf24;
+    --amber-500: #f59e0b;
+    --rose-400: #fb7185;
+    --sky-400: #38bdf8;
+    --violet-400: #a78bfa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0f9ff 100%);
+    color: var(--slate-800);
+    padding: 2rem;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 2.5rem 1rem 3rem;
+    position: relative;
+  }
+
+  header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--teal-800);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  header h1 span {
+    color: var(--teal-500);
+  }
+
+  header p {
+    font-size: 1.1rem;
+    color: var(--slate-500);
+    margin-top: 0.5rem;
+    font-weight: 400;
+  }
+
+  header .tech-badge {
+    display: inline-flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  header .tech-badge span {
+    background: white;
+    border: 1px solid var(--slate-200);
+    padding: 0.35rem 1rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--slate-600);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  header .tech-badge .dotnet {
+    border-color: #512bd4;
+    color: #512bd4;
+  }
+  header .tech-badge .sql {
+    border-color: #0078d4;
+    color: #0078d4;
+  }
+  header .tech-badge .ef {
+    border-color: #10b981;
+    color: #10b981;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal-500), var(--teal-200));
+    border-radius: 2px;
+    margin: 1.5rem auto 0;
+  }
+
+  /* Title note */
+  .title-note {
+    background: white;
+    border: 1px solid var(--slate-200);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--slate-600);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .title-note strong {
+    color: var(--slate-800);
+  }
+
+  .title-note .identity-badge {
+    display: inline-block;
+    background: #f0f0ff;
+    color: #512bd4;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--slate-700);
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--teal-500);
+  }
+
+  .section-title .icon {
+    margin-right: 0.5rem;
+  }
+
+  .section-bg {
+    background: rgba(255,255,255,0.5);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.8);
+  }
+
+  /* Table Grid */
+  .table-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* Table Card */
+  .table-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--slate-200);
+  }
+
+  .table-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  .card-header {
+    padding: 0.85rem 1.25rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-header .table-name {
+    letter-spacing: -0.01em;
+  }
+
+  .card-header .badge-count {
+    background: rgba(255,255,255,0.25);
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .card-header .ef-name {
+    font-size: 0.65rem;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-left: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Card header colors by section */
+  .section-users .card-header { background: linear-gradient(135deg, #0ea5e9, #06b6d4); }
+  .section-pets .card-header { background: linear-gradient(135deg, #10b981, #34d399); }
+  .section-services .card-header { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .section-ops .card-header { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+
+  .card-body {
+    padding: 0.75rem 1.25rem 1rem;
+  }
+
+  .column-list {
+    list-style: none;
+  }
+
+  .column-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--slate-100);
+    line-height: 1.4;
+  }
+
+  .column-item:last-child {
+    border-bottom: none;
+  }
+
+  .col-name {
+    font-weight: 600;
+    color: var(--slate-800);
+    font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.82rem;
+  }
+
+  .col-type {
+    font-size: 0.7rem;
+    color: var(--slate-400);
+    font-family: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .col-type.sql {
+    color: #0078d4;
+  }
+
+  .badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .badge-pk {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  .badge-fk {
+    background: #dbeafe;
+    color: #2563eb;
+  }
+
+  .badge-unique {
+    background: #fce7f3;
+    color: #db2777;
+  }
+
+  .badge-identity {
+    background: #ede9fe;
+    color: #6d28d9;
+    font-size: 0.55rem;
+  }
+
+  /* Relaciones */
+  .relations-section {
+    margin-top: 1rem;
+    background: white;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    border: 1px solid var(--slate-200);
+  }
+
+  .relations-section h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--slate-700);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .relations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .relation-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--slate-50);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    border: 1px solid var(--slate-100);
+  }
+
+  .relation-item .ent {
+    font-weight: 600;
+    color: var(--slate-700);
+  }
+
+  .relation-item .arrow {
+    color: var(--teal-500);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .relation-item .card-type {
+    font-weight: 600;
+    font-size: 0.7rem;
+    color: white;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+    background: var(--teal-500);
+  }
+
+  .relation-item .card-type.one-one {
+    background: var(--sky-400);
+  }
+
+  .relation-item .card-type.one-many {
+    background: var(--teal-500);
+  }
+
+  /* Legend */
+  .legend {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 1.25rem;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--slate-200);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--slate-600);
+  }
+
+  .legend-item .badge {
+    font-size: 0.65rem;
+  }
+
+  .legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .legend-color.users { background: linear-gradient(135deg, #0ea5e9, #06b6d4); }
+  .legend-color.pets { background: linear-gradient(135deg, #10b981, #34d399); }
+  .legend-color.services { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+  .legend-color.ops { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem 0 0.5rem;
+    color: var(--slate-400);
+    font-size: 0.8rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body { padding: 1rem; }
+    header h1 { font-size: 1.8rem; }
+    .table-grid { grid-template-columns: 1fr; }
+    .relations-grid { grid-template-columns: 1fr; }
+    .section-bg { padding: 1rem; }
+    .legend { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .table-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Trustride <span>—</span> Modelo de Datos</h1>
+    <p>Diagrama de Base de Datos · SQL Server + .NET Core + EF Core</p>
+    <div class="tech-badge">
+      <span class="sql">SQL Server</span>
+      <span class="dotnet">.NET Core Web API</span>
+      <span class="ef">Entity Framework Core</span>
+    </div>
+  </header>
+
+  <div class="title-note">
+    <span>ℹ️</span>
+    <span><strong>Users</strong> se vincula a <span class="identity-badge">AspNetUsers</span> de ASP.NET Core Identity (PK = <code>UNIQUEIDENTIFIER</code> compartido). Enums como <code>TINYINT</code> mapeado con EF Core <code>HasConversion&lt;int&gt;()</code>. PKs internas como <code>INT IDENTITY</code>.</span>
+  </div>
+
+  <!-- SECCIÓN 1: Usuarios y Perfiles -->
+  <div class="section section-users">
+    <div class="section-title"><span class="icon">👤</span> Usuarios y Perfiles</div>
+    <div class="section-bg">
+      <div class="table-grid">
+
+        <!-- Users -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Users <span class="ef-name">DbSet&lt;User&gt;</span></span>
+            <span class="badge-count">7 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="badge badge-identity">AUTH</span><span class="col-name">Id</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="col-name">Nombre</span><span class="col-type sql">NVARCHAR(100)</span></li>
+              <li class="column-item"><span class="col-name">Apellido</span><span class="col-type sql">NVARCHAR(100)</span></li>
+              <li class="column-item"><span class="col-name">Teléfono</span><span class="col-type sql">NVARCHAR(20)</span></li>
+              <li class="column-item"><span class="col-name">Rol</span><span class="col-type sql">TINYINT</span></li>
+              <li class="column-item"><span class="col-name">Foto_URL</span><span class="col-type sql">NVARCHAR(500)</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- OwnerProfiles -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">OwnerProfiles <span class="ef-name">DbSet&lt;OwnerProfile&gt;</span></span>
+            <span class="badge-count">3 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">UserId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- WalkerProfiles -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">WalkerProfiles <span class="ef-name">DbSet&lt;WalkerProfile&gt;</span></span>
+            <span class="badge-count">7 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">UserId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="col-name">AñosExperiencia</span><span class="col-type sql">INT</span></li>
+              <li class="column-item"><span class="col-name">RadioKm</span><span class="col-type sql">DECIMAL(18,2)</span></li>
+              <li class="column-item"><span class="col-name">Transporte</span><span class="col-type sql">NVARCHAR(50)</span></li>
+              <li class="column-item"><span class="col-name">Descripción</span><span class="col-type sql">NVARCHAR(MAX)</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Addresses -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Addresses <span class="ef-name">DbSet&lt;Address&gt;</span></span>
+            <span class="badge-count">6 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">UserId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="col-name">DirecciónTexto</span><span class="col-type sql">NVARCHAR(300)</span></li>
+              <li class="column-item"><span class="col-name">Latitud</span><span class="col-type sql">DECIMAL(10,7)</span></li>
+              <li class="column-item"><span class="col-name">Longitud</span><span class="col-type sql">DECIMAL(10,7)</span></li>
+              <li class="column-item"><span class="col-name">Etiqueta</span><span class="col-type sql">NVARCHAR(50)</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Notifications <span class="ef-name">DbSet&lt;Notification&gt;</span></span>
+            <span class="badge-count">6 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">UserId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="col-name">Tipo</span><span class="col-type sql">NVARCHAR(50)</span></li>
+              <li class="column-item"><span class="col-name">Mensaje</span><span class="col-type sql">NVARCHAR(MAX)</span></li>
+              <li class="column-item"><span class="col-name">Leída</span><span class="col-type sql">BIT</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: Mascotas y Catálogos -->
+  <div class="section section-pets">
+    <div class="section-title"><span class="icon">🐾</span> Mascotas y Catálogos</div>
+    <div class="section-bg">
+      <div class="table-grid">
+
+        <!-- Species -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Species <span class="ef-name">DbSet&lt;Species&gt;</span></span>
+            <span class="badge-count">2 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="col-name">Nombre</span><span class="col-type sql">NVARCHAR(50)</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Breeds -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Breeds <span class="ef-name">DbSet&lt;Breed&gt;</span></span>
+            <span class="badge-count">3 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">SpeciesId</span><span class="col-type sql">INT</span></li>
+              <li class="column-item"><span class="col-name">Nombre</span><span class="col-type sql">NVARCHAR(50)</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Pets -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Pets <span class="ef-name">DbSet&lt;Pet&gt;</span></span>
+            <span class="badge-count">7 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">OwnerId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">BreedId</span><span class="col-type sql">INT</span></li>
+              <li class="column-item"><span class="col-name">NombreMascota</span><span class="col-type sql">NVARCHAR(50)</span></li>
+              <li class="column-item"><span class="col-name">PesoKg</span><span class="col-type sql">DECIMAL(5,2)</span></li>
+              <li class="column-item"><span class="col-name">Comportamiento</span><span class="col-type sql">NVARCHAR(MAX)</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: Servicios y Transacciones -->
+  <div class="section section-services">
+    <div class="section-title"><span class="icon">📋</span> Servicios y Transacciones</div>
+    <div class="section-bg">
+      <div class="table-grid">
+
+        <!-- Services -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Services <span class="ef-name">DbSet&lt;Service&gt;</span></span>
+            <span class="badge-count">10 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">OwnerId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">WalkerId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">PetId</span><span class="col-type sql">INT</span></li>
+              <li class="column-item"><span class="col-name">FechaInicio</span><span class="col-type sql">DATETIME2</span></li>
+              <li class="column-item"><span class="col-name">FechaFin</span><span class="col-type sql">DATETIME2</span></li>
+              <li class="column-item"><span class="col-name">Estado</span><span class="col-type sql">TINYINT</span></li>
+              <li class="column-item"><span class="col-name">Precio</span><span class="col-type sql">DECIMAL(18,2)</span></li>
+              <li class="column-item"><span class="col-name">Descripción</span><span class="col-type sql">NVARCHAR(MAX)</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Reviews <span class="ef-name">DbSet&lt;Review&gt;</span></span>
+            <span class="badge-count">6 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="badge badge-unique">UQ</span><span class="col-name">ServiceId</span><span class="col-type sql">INT</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">AuthorId</span><span class="col-type sql">UNIQUEIDENTIFIER</span></li>
+              <li class="column-item"><span class="col-name">Estrellas</span><span class="col-type sql">TINYINT</span></li>
+              <li class="column-item"><span class="col-name">Comentario</span><span class="col-type sql">NVARCHAR(MAX)</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Payments -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">Payments <span class="ef-name">DbSet&lt;Payment&gt;</span></span>
+            <span class="badge-count">7 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="badge badge-unique">UQ</span><span class="col-name">ServiceId</span><span class="col-type sql">INT</span></li>
+              <li class="column-item"><span class="col-name">Método</span><span class="col-type sql">NVARCHAR(50)</span></li>
+              <li class="column-item"><span class="col-name">Monto</span><span class="col-type sql">DECIMAL(18,2)</span></li>
+              <li class="column-item"><span class="col-name">ComisiónPlataforma</span><span class="col-type sql">DECIMAL(18,2)</span></li>
+              <li class="column-item"><span class="col-name">IDTransacción</span><span class="col-type sql">NVARCHAR(100)</span></li>
+              <li class="column-item"><span class="col-name">CreatedAt</span><span class="col-type sql">DATETIME2</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: Operación -->
+  <div class="section section-ops">
+    <div class="section-title"><span class="icon">⚙️</span> Operación</div>
+    <div class="section-bg">
+      <div class="table-grid">
+
+        <!-- AvailabilitySlots -->
+        <div class="table-card">
+          <div class="card-header">
+            <span class="table-name">AvailabilitySlots <span class="ef-name">DbSet&lt;AvailabilitySlot&gt;</span></span>
+            <span class="badge-count">5 cols</span>
+          </div>
+          <div class="card-body">
+            <ul class="column-list">
+              <li class="column-item"><span class="badge badge-pk">PK</span><span class="col-name">Id</span><span class="col-type sql">INT IDENTITY</span></li>
+              <li class="column-item"><span class="badge badge-fk">FK</span><span class="col-name">WalkerProfileId</span><span class="col-type sql">INT</span></li>
+              <li class="column-item"><span class="col-name">DíaSemana</span><span class="col-type sql">TINYINT</span></li>
+              <li class="column-item"><span class="col-name">HoraInicio</span><span class="col-type sql">TIME</span></li>
+              <li class="column-item"><span class="col-name">HoraFin</span><span class="col-type sql">TIME</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RELACIONES -->
+  <div class="relations-section">
+    <h3>🔗 Relaciones entre Tablas</h3>
+    <div class="relations-grid">
+
+      <div class="relation-item">
+        <span class="ent">AspNetUsers</span>
+        <span class="arrow">⟷ 1:1 ⟶</span>
+        <span class="ent">Users</span>
+        <span class="card-type one-one">1:1</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users</span>
+        <span class="arrow">⟷ 1:1 ⟶</span>
+        <span class="ent">OwnerProfiles</span>
+        <span class="card-type one-one">1:1</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users</span>
+        <span class="arrow">⟷ 1:1 ⟶</span>
+        <span class="ent">WalkerProfiles</span>
+        <span class="card-type one-one">1:1</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Pets</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Addresses</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Notifications</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users (OwnerId)</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Services</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users (WalkerId)</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Services</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Users</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Reviews (author)</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Species</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Breeds</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Breeds</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Pets</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">WalkerProfiles</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">AvailabilitySlots</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Pets</span>
+        <span class="arrow">⟷ 1:N ⟶</span>
+        <span class="ent">Services</span>
+        <span class="card-type one-many">1:N</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Services</span>
+        <span class="arrow">⟷ 1:1 ⟶</span>
+        <span class="ent">Reviews</span>
+        <span class="card-type one-one">1:1</span>
+      </div>
+
+      <div class="relation-item">
+        <span class="ent">Services</span>
+        <span class="arrow">⟷ 1:1 ⟶</span>
+        <span class="ent">Payments</span>
+        <span class="card-type one-one">1:1</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LEYENDA -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="badge badge-pk">PK</span>
+      Primary Key (Clave Primaria)
+    </div>
+    <div class="legend-item">
+      <span class="badge badge-fk">FK</span>
+      Foreign Key (Clave Foránea)
+    </div>
+    <div class="legend-item">
+      <span class="badge badge-unique">UQ</span>
+      Unique (Valor único)
+    </div>
+    <div class="legend-item">
+      <span class="badge badge-identity">AUTH</span>
+      Vinculado a AspNetUsers (Identity)
+    </div>
+    <div class="legend-item">
+      <span class="legend-color users"></span>
+      Usuarios y Perfiles
+    </div>
+    <div class="legend-item">
+      <span class="legend-color pets"></span>
+      Mascotas y Catálogos
+    </div>
+    <div class="legend-item">
+      <span class="legend-color services"></span>
+      Servicios y Transacciones
+    </div>
+    <div class="legend-item">
+      <span class="legend-color ops"></span>
+      Operación
+    </div>
+  </div>
+
+  <footer>
+    Trustride &copy; 2026 &middot; SQL Server + .NET Core + EF Core &middot; Modelo adaptado con recomendaciones @oracle
+  </footer>
+
+</div>
+</body>
+</html>

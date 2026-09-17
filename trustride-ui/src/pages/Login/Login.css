@@ -1,0 +1,42 @@
+.login-page { min-height: 100vh; background: var(--bg); }
+.login-container { display: flex; min-height: 100vh; }
+.login-branding { flex: 1; background: linear-gradient(135deg, #2D6A4F 0%, #1B4332 100%); display: flex; align-items: center; justify-content: center; padding: 48px; position: relative; overflow: hidden; }
+@media (max-width: 1024px) { .login-branding { display: none; } }
+.login-brand-content { position: relative; z-index: 1; max-width: 400px; }
+.login-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 48px; }
+.login-logo-icon { width: 48px; height: 48px; background: white; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+.login-logo-text { color: white; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.login-branding h1 { color: white; font-size: 40px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
+.login-branding p { color: rgba(255,255,255,0.8); font-size: 17px; line-height: 1.6; margin-bottom: 48px; }
+.login-features { display: flex; flex-direction: column; gap: 24px; }
+.login-feature { display: flex; align-items: flex-start; gap: 16px; }
+.login-feature-icon { font-size: 24px; color: white; display: flex; align-items: center; justify-content: center; }
+.login-feature-title { color: white; font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+.login-feature-desc { color: rgba(255,255,255,0.7); font-size: 13px; }
+.login-form-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; }
+@media (min-width: 768px) { .login-form-container { padding: 48px; } }
+.login-form { width: 100%; max-width: 400px; }
+.login-form h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.login-subtitle { color: var(--text-secondary); margin-bottom: 24px; }
+.role-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 28px; }
+.role-option { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 12px; border: 2px solid var(--border); border-radius: 14px; background: none; cursor: pointer; transition: all 0.15s ease; }
+.role-option:hover { border-color: var(--border-hover); background: var(--surface-hover); }
+.role-option--active { border-color: var(--accent); background: var(--accent-light); }
+.role-icon { font-size: 24px; display: flex; align-items: center; justify-content: center; }
+.role-label { font-size: 13px; font-weight: 600; }
+.form-input-wrapper { position: relative; }
+.form-input-wrapper .form-input { padding-right: 44px; }
+.form-input-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-tertiary); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; }
+.form-input-icon:hover { color: var(--text-secondary); }
+.form-options { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.form-checkbox { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-secondary); cursor: pointer; }
+.form-checkbox input { width: 16px; height: 16px; accent-color: var(--accent); }
+.form-forgot { font-size: 14px; color: var(--accent); }
+.login-divider { display: flex; align-items: center; gap: 16px; margin: 28px 0; }
+.login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--divider); }
+.login-divider span { font-size: 13px; color: var(--text-tertiary); white-space: nowrap; }
+.social-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.social-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s ease; }
+.social-btn:hover { background: var(--surface-hover); }
+.login-footer { text-align: center; font-size: 14px; color: var(--text-secondary); }
+.login-footer a { color: var(--accent); font-weight: 500; }

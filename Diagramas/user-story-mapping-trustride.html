@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Story Mapping — Trustride</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    padding: 40px;
+    min-width: 1400px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding: 0 8px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.35);
+  }
+  .header h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #1a1a2e;
+    letter-spacing: -0.5px;
+  }
+  .header h1 span { color: #6366f1; }
+  .header-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .header-badge {
+    display: flex; gap: 10px;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .badge-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .badge-dot.owner { background: #6366f1; }
+  .badge-dot.walker { background: #0ea5e9; }
+  .badge-dot.admin { background: #10b981; }
+
+  /* ── STORY MAP ── */
+  .story-map {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── SCROLL CONTAINER ── */
+  .map-scroll {
+    overflow-x: auto;
+    padding: 0;
+  }
+  .map-table {
+    display: grid;
+    /* 8 columns: one per activity */
+    grid-template-columns: 140px repeat(8, minmax(170px, 1fr));
+    min-width: 1500px;
+  }
+
+  /* ── BACKBONE (ACTIVITIES) ── */
+  .backbone-label {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1a1a2e;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    gap: 8px;
+  }
+  .backbone-label::before {
+    content: '🏗️';
+    font-size: 14px;
+  }
+  .backbone-label span {
+    background: rgba(0,0,0,0.1);
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+
+  .cell-activity {
+    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+    padding: 14px 12px;
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a1a2e;
+    border-right: 1px solid rgba(0,0,0,0.06);
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cell-activity .num {
+    display: inline-block;
+    background: rgba(0,0,0,0.12);
+    border-radius: 4px;
+    padding: 0 6px;
+    margin-right: 5px;
+    font-size: 11px;
+  }
+  .cell-spacer {
+    background: #fbbf24;
+    border-right: 1px solid rgba(0,0,0,0.06);
+  }
+  .cell-spacer-inner {
+    padding: 10px 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: #92400e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── RELEASE ROWS ── */
+  .release-row { position: relative; }
+
+  .release-label {
+    padding: 10px 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .release-label.mvp {
+    background: linear-gradient(180deg, #dbeafe, #bfdbfe);
+    color: #1e40af;
+    border-bottom: 2px dashed #93c5fd;
+  }
+  .release-label.v2 {
+    background: linear-gradient(180deg, #fce7f3, #fbcfe8);
+    color: #9d174d;
+    border-bottom: 2px dashed #f9a8d4;
+  }
+  .release-label.v3 {
+    background: linear-gradient(180deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+  }
+
+  .release-cell {
+    padding: 10px 8px;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+    min-height: 80px;
+  }
+  .release-cell:last-child { border-right: none; }
+
+  .release-row.mvp .release-cell { background: #f8fafc; }
+  .release-row.v2 .release-cell { background: #fdf2f8; }
+  .release-row.v3 .release-cell { background: #ecfdf5; }
+
+  /* ── STORY CARDS ── */
+  .story-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    font-size: 11.5px;
+    line-height: 1.4;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    border-left: 3px solid #cbd5e1;
+    transition: box-shadow 0.15s;
+    position: relative;
+  }
+  .story-card:last-child { margin-bottom: 0; }
+  .story-card:hover { box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+
+  .story-card .actor-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .story-card.owner { border-left-color: #6366f1; }
+  .story-card.owner .actor-tag { background: #eef2ff; color: #4338ca; }
+
+  .story-card.walker { border-left-color: #0ea5e9; }
+  .story-card.walker .actor-tag { background: #f0f9ff; color: #0369a1; }
+
+  .story-card.admin { border-left-color: #10b981; }
+  .story-card.admin .actor-tag { background: #ecfdf5; color: #047857; }
+
+  .story-card .card-text { color: #334155; font-weight: 500; }
+
+  /* ── RELEASE DIVIDER LINES ── */
+  .row-separator {
+    grid-column: 1 / -1;
+    height: 0;
+    border-top: 3px dashed #94a3b8;
+    position: relative;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    gap: 24px;
+    padding: 16px 24px;
+    border-top: 1px solid #e2e8f0;
+    background: #fafafa;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #475569;
+  }
+  .legend-swatch {
+    width: 16px; height: 16px;
+    border-radius: 4px;
+  }
+  .legend-swatch.mvp { background: #bfdbfe; border: 1px solid #93c5fd; }
+  .legend-swatch.v2 { background: #fbcfe8; border: 1px solid #f9a8d4; }
+  .legend-swatch.v3 { background: #a7f3d0; border: 1px solid #6ee7b7; }
+
+  /* ── META ── */
+  .meta-footer {
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e2e8f0;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+
+  /* ── STICKY NOTE VARIANT ── */
+  .sticky-row { display: contents; }
+
+  @media print {
+    body { padding: 20px; background: #fff; }
+    .story-map { box-shadow: none; border: 1px solid #e2e8f0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-icon">T</div>
+    <div>
+      <h1><span>Trustride</span> — Tu paseador de confianza</h1>
+      <div class="header-subtitle">User Story Mapping · Jeff Patton Style</div>
+    </div>
+  </div>
+  <div class="header-badge">
+    <div class="badge"><span class="badge-dot owner"></span> Dueño</div>
+    <div class="badge"><span class="badge-dot walker"></span> Paseador</div>
+    <div class="badge"><span class="badge-dot admin"></span> Admin</div>
+  </div>
+</div>
+
+<div class="story-map">
+  <div class="map-scroll">
+    <div class="map-table">
+
+      <!-- BACKBONE ROW -->
+      <div class="backbone-label">
+        BACKBONE (Actividades)
+        <span>8 actividades</span>
+      </div>
+
+      <!-- Spacer col -->
+      <div class="cell-spacer"><div class="cell-spacer-inner">Release</div></div>
+
+      <!-- Activity headers -->
+      <div class="cell-activity"><span class="num">1</span> Registrarse</div>
+      <div class="cell-activity"><span class="num">2</span> Registrar Mascota</div>
+      <div class="cell-activity"><span class="num">3</span> Publicar Paseo</div>
+      <div class="cell-activity"><span class="num">4</span> Recibir Ofertas</div>
+      <div class="cell-activity"><span class="num">5</span> Elegir Paseador</div>
+      <div class="cell-activity"><span class="num">6</span> Realizar Paseo</div>
+      <div class="cell-activity"><span class="num">7</span> Pagar</div>
+      <div class="cell-activity"><span class="num">8</span> Calificar</div>
+
+      <!-- ═══════════════ MVP ROW ═══════════════ -->
+      <div class="release-label mvp">🚀 MVP<br><span style="font-weight:400;font-size:10px;">Core funcional</span></div>
+
+      <!-- 1. Registrarse -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Crear cuenta con email, Google o Facebook</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Crear cuenta + registro de perfil</div>
+        </div>
+      </div>
+
+      <!-- 2. Registrar Mascota -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Registrar datos básicos (nombre, raza, edad, peso, foto)</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Añadir condiciones médicas y comportamiento</div>
+        </div>
+      </div>
+
+      <!-- 3. Publicar Paseo -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Indicar ruta, hora y duración del paseo</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Fijar precio inicial (o usar precio por defecto)</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Publicar solicitud de paseo</div>
+        </div>
+      </div>
+
+      <!-- 4. Recibir Ofertas -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Ver lista de paseadores que ofertan</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Buscar paseos disponibles (cerca/por hora)</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Enviar oferta con su precio</div>
+        </div>
+      </div>
+
+      <!-- 5. Elegir Paseador -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Ver perfil y reseñas del paseador</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Aceptar oferta y confirmar el paseo</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Recibir notificación de confirmación</div>
+        </div>
+      </div>
+
+      <!-- 6. Realizar Paseo -->
+      <div class="release-cell">
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Iniciar paseo (marcar inicio)</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Recibir notificación de inicio/fin</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Finalizar paseo (marcar fin)</div>
+        </div>
+      </div>
+
+      <!-- 7. Pagar -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Pago simulado (confirmación sin pasarela real)</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Notificación de cobro del paseo</div>
+        </div>
+      </div>
+
+      <!-- 8. Calificar -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Calificar al paseador (estrellas + comentario)</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Calificar a la mascota y al dueño</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ SEPARATOR ═══════════════ -->
+      <div class="row-separator"></div>
+
+      <!-- ═══════════════ v2.0 ROW ═══════════════ -->
+      <div class="release-label v2">📱 v2.0<br><span style="font-weight:400;font-size:10px;">Crecimiento</span></div>
+
+      <!-- 1. Registrarse -->
+      <div class="release-cell">
+        <div class="story-card admin">
+          <div class="actor-tag">Admin</div>
+          <div class="card-text">Aprobar/rechazar cuentas de paseadores</div>
+        </div>
+      </div>
+
+      <!-- 2. Registrar Mascota -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Añadir documentos y vacunas</div>
+        </div>
+      </div>
+
+      <!-- 3. Publicar Paseo -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Agendar paseos recurrentes (semanal/diario)</div>
+        </div>
+      </div>
+
+      <!-- 4. Recibir Ofertas -->
+      <div class="release-cell">
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Sistema completo de contraofertas (InDrive)</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Chat en tiempo real con paseadores</div>
+        </div>
+      </div>
+
+      <!-- 5. Elegir Paseador -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Marcar paseador favorito / recurrente</div>
+        </div>
+      </div>
+
+      <!-- 6. Realizar Paseo -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Seguimiento GPS en tiempo real</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Recibir fotos durante el paseo</div>
+        </div>
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Compartir ubicación en vivo</div>
+        </div>
+      </div>
+
+      <!-- 7. Pagar -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Pago anticipado para apartar paseador</div>
+        </div>
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Pago después del paseo (por defecto)</div>
+        </div>
+        <div class="story-card admin">
+          <div class="actor-tag">Admin</div>
+          <div class="card-text">Gestión de comisiones por transacción</div>
+        </div>
+      </div>
+
+      <!-- 8. Calificar -->
+      <div class="release-cell">
+        <div class="story-card admin">
+          <div class="actor-tag">Admin</div>
+          <div class="card-text">Moderar reseñas inapropiadas</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ SEPARATOR ═══════════════ -->
+      <div class="row-separator"></div>
+
+      <!-- ═══════════════ v3.0 ROW ═══════════════ -->
+      <div class="release-label v3">⭐ v3.0<br><span style="font-weight:400;font-size:10px;">Expansión</span></div>
+
+      <!-- 1. Registrarse -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Registro en app móvil nativa</div>
+        </div>
+      </div>
+
+      <!-- 2. Registrar Mascota -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Expediente veterinario completo en app</div>
+        </div>
+      </div>
+
+      <!-- 3. Publicar Paseo -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Paseo express (inmediato, sin agendar)</div>
+        </div>
+      </div>
+
+      <!-- 4. Recibir Ofertas -->
+      <div class="release-cell">
+        <div class="story-card walker">
+          <div class="actor-tag">Paseador</div>
+          <div class="card-text">Recibir alertas de paseos cercanos</div>
+        </div>
+      </div>
+
+      <!-- 5. Elegir Paseador -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Suscripciones y planes mensuales</div>
+        </div>
+      </div>
+
+      <!-- 6. Realizar Paseo -->
+      <div class="release-cell">
+        <div class="story-card owner">
+          <div class="actor-tag">Dueño</div>
+          <div class="card-text">Emergencia: contacto veterinario cercano</div>
+        </div>
+      </div>
+
+      <!-- 7. Pagar -->
+      <div class="release-cell">
+        <div class="story-card admin">
+          <div class="actor-tag">Admin</div>
+          <div class="card-text">Reportes financieros y estadísticas</div>
+        </div>
+      </div>
+
+      <!-- 8. Calificar -->
+      <div class="release-cell">
+        <div class="story-card admin">
+          <div class="actor-tag">Admin</div>
+          <div class="card-text">Reportes de calidad del servicio</div>
+        </div>
+      </div>
+
+    </div><!-- /map-table -->
+  </div><!-- /map-scroll -->
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <span style="font-weight:600;color:#334155;font-size:13px;">Leyenda de releases:</span>
+    <div class="legend-item"><div class="legend-swatch mvp"></div> MVP — Funcionalidad core</div>
+    <div class="legend-item"><div class="legend-swatch v2"></div> v2.0 — Crecimiento</div>
+    <div class="legend-item"><div class="legend-swatch v3"></div> v3.0 — Expansión</div>
+  </div>
+
+  <!-- META -->
+  <div class="meta-footer">
+    <span>Trustride — Tu paseador de confianza</span>
+    <span>Generado: junio 2026 · Metodología: Jeff Patton</span>
+  </div>
+
+</div><!-- /story-map -->
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+/* ═══════════════════════════════════════════════════════════════
+   TOKENS — Opción 2: Verde natural
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #ffffff;
+  --bg-secondary: #f7f9f7;
+  --surface: rgba(0, 0, 0, 0.03);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+  --text: #1a2e1a;
+  --text-secondary: #5a6b5a;
+  --text-tertiary: #94a394;
+  --accent: #2d6a4f;
+  --accent-hover: #245840;
+  --accent-light: rgba(45, 106, 79, 0.08);
+  --accent-glow: rgba(45, 106, 79, 0.15);
+  --green: #40916c;
+  --green-light: rgba(64, 145, 108, 0.1);
+  --orange: #f4a261;
+  --orange-light: rgba(244, 162, 97, 0.1);
+  --red: #e63946;
+  --red-light: rgba(230, 57, 70, 0.1);
+  --purple: #7209b7;
+  --purple-light: rgba(114, 9, 183, 0.1);
+  --blue: #457b9d;
+  --blue-light: rgba(69, 123, 157, 0.1);
+  --teal: #2a9d8f;
+  --teal-light: rgba(42, 157, 143, 0.1);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --divider: rgba(0, 0, 0, 0.06);
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --sidebar-width: 260px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
